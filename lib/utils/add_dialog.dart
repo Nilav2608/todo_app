@@ -6,7 +6,11 @@ class AddDialog extends StatelessWidget {
   final controller;
   VoidCallback save;
   VoidCallback cancel;
-  AddDialog({super.key, required this.controller, required this.cancel,required this.save});
+  AddDialog(
+      {super.key,
+      required this.controller,
+      required this.cancel,
+      required this.save});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,8 @@ class AddDialog extends StatelessWidget {
               decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(),
                   border: OutlineInputBorder(),
+                  labelText: "Add task",
+                  labelStyle: TextStyle(color: Colors.black26),
                   hintText: "Add a new task"),
             ),
             const SizedBox(
