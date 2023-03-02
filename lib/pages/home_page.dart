@@ -16,12 +16,14 @@ class _HomePageState extends State<HomePage> {
     ["make tutorial", false],
   ];
 
+  //*Check box
   void toggle(bool? value, int index) {
     setState(() {
       todoList[index][1] = !todoList[index][1];
     });
   }
-
+  
+   //*Add task
   void addTask() {
     setState(() {
       todoList.add([_controller.text, false]);
@@ -29,7 +31,8 @@ class _HomePageState extends State<HomePage> {
     });
     _controller.clear();
   }
-
+  
+   //*Create a new task
   void createNewTask() {
     showDialog(
       context: context,
@@ -42,6 +45,8 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  //*Delete a task
 
   void deleteTask(int index) {
     setState(() {
