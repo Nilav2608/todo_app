@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_app/database/services.dart';
 import 'package:todo_app/models/model.dart';
 import 'package:todo_app/utils/add_dialog.dart';
 import 'package:todo_app/utils/todo_tile.dart';
@@ -18,12 +17,23 @@ class _HomePageState extends State<HomePage> {
 
   final _myBox = Hive.box('mybox');
 
+  @override
+  void initState() {
+    if (_myBox.get("TODOLIST") == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+    super.initState();
+  }
+
   //*Check box
   void toggle(bool? value, int index) {
     setState(() {
-      db.todoList[index][2] = !db.todoList[index][2] ;
+      db.todoList[index][1] = !db.todoList[index][1];
       // check = !check;
     });
+    db.updateDataBase();
   }
 
   //*Add task
@@ -32,6 +42,7 @@ class _HomePageState extends State<HomePage> {
       db.todoList.add([_controller.text, false]);
     });
     Navigator.of(context).pop();
+    db.updateDataBase();
   }
 
   // @override
@@ -67,6 +78,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+    _controller.clear();
   }
 
   //*Delete a task
@@ -75,6 +87,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.todoList.removeAt(index);
     });
+    db.updateDataBase();
   }
 
   @override

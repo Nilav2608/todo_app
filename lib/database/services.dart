@@ -7,9 +7,9 @@ class UserServices {
     _repository = Repository();
   }
 
-  saveUser(Task user) async {
-    return await _repository.insertData("users", user.userMap());
-  }
+  // saveUser(Task user) async {
+  //   return await _repository.insertData("users", user.userMap());
+  // }
 
   readAllUsers() async {
     return await _repository.readData('users');
