@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_app/database/services.dart';
+import 'package:todo_app/models/model.dart';
 import 'package:todo_app/utils/add_dialog.dart';
 import 'package:todo_app/utils/todo_tile.dart';
 
@@ -11,28 +14,48 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
+  Task db = Task();
 
-  List todoList = [
-    ["make tutorial", false],
-  ];
+  final _myBox = Hive.box('mybox');
 
   //*Check box
   void toggle(bool? value, int index) {
     setState(() {
-      todoList[index][1] = !todoList[index][1];
+      db.todoList[index][2] = !db.todoList[index][2] ;
+      // check = !check;
     });
   }
-  
-   //*Add task
-  void addTask() {
+
+  //*Add task
+  addTask() async {
     setState(() {
-      todoList.add([_controller.text, false]);
-      Navigator.of(context).pop();
+      db.todoList.add([_controller.text, false]);
     });
-    _controller.clear();
+    Navigator.of(context).pop();
   }
-  
-   //*Create a new task
+
+  // @override
+  // void initState() {
+  //   getAllUserDetails();
+  //   super.initState();
+  // }
+
+  // //*get users from data base
+  // getAllUserDetails() async {
+  //   var users = await _userService.readAllUsers();
+  //   _todoList = <Task>[];
+  //   users.forEach((user) {
+  //     setState(() {
+  //       var taskModel = Task();
+  //       taskModel.id = user['id'];
+  //       taskModel.taskTitle = user['taskTitle'];
+  //       taskModel.finished = user['finished'];
+  //       _todoList.add(taskModel);
+  //     });
+  //   });
+  // }
+
+  //*Create a new task
   void createNewTask() {
     showDialog(
       context: context,
@@ -48,9 +71,9 @@ class _HomePageState extends State<HomePage> {
 
   //*Delete a task
 
-  void deleteTask(int index) {
+  deleteTask(int index) {
     setState(() {
-      todoList.removeAt(index);
+      db.todoList.removeAt(index);
     });
   }
 
@@ -70,14 +93,17 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       body: ListView.builder(
-        itemCount: todoList.length,
+        itemCount: db.todoList.length,
         itemBuilder: (context, index) {
           return TodoTile(
-            taskName: todoList[index][0],
-            taskCompleted: todoList[index][1],
+            taskName: db.todoList[index][0],
+            taskCompleted: db.todoList[index][1],
             onchanged: (value) => toggle(value, index),
-            deleteFunction: (context) => deleteTask(index),
+            deleteFunction: (contex) => deleteTask(index),
           );
+          // return ListTile(
+          //   title: Text(_todoList[index].taskTitle ?? ''),
+          // );
         },
       ),
     );

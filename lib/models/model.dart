@@ -1,14 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 class Task {
-  int? id;
-  String? taskTitle;
-  bool? finished;
+  List todoList = [];
 
-  userMap() {
-    var mapping = Map<String, dynamic>();
+  final _myBox = Hive.box('myBox');
 
-    mapping['id'] = id;
-    mapping['taskTitle'] = taskTitle;
-    mapping['finished'] = finished;
-    return mapping;
-  }
+  
+ 
+
 }
